@@ -1,4 +1,8 @@
-import { createApartmentService, listApartmentsService, getApartmentService } from '../apartment.service';
+import {
+  createApartmentService,
+  listApartmentsService,
+  getApartmentService,
+} from '../apartment.service';
 import _prisma from '../../../prismaCLient';
 
 describe('Apartment Service', () => {

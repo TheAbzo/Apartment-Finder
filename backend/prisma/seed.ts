@@ -5,18 +5,21 @@ import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 
-
 const IMAGES_FOLDER = path.join(__dirname, 'seed-images');
 
-const imageFiles = fs.readdirSync(IMAGES_FOLDER).filter(f =>
-  /\.(jpe?g|png|gif|webp)$/i.test(f)
-);
+const imageFiles = fs.readdirSync(IMAGES_FOLDER).filter((f) => /\.(jpe?g|png|gif|webp)$/i.test(f));
 async function main() {
   console.log('Cleaning tables...');
   await prisma.apartment.deleteMany();
   await prisma.project.deleteMany();
 
-  const projectNames = ['SeaView Towers','City Center Residences','Green Heights','River Side Complex','Sunset Villas'];
+  const projectNames = [
+    'SeaView Towers',
+    'City Center Residences',
+    'Green Heights',
+    'River Side Complex',
+    'Sunset Villas',
+  ];
   const projects: Array<Awaited<ReturnType<typeof prisma.project.create>>> = [];
 
   for (const name of projectNames) {
@@ -59,5 +62,10 @@ async function main() {
 }
 
 main()
-  .catch(e => { console.error('Seed error:', e); process.exit(1); })
-  .finally(async () => { await prisma.$disconnect(); });
+  .catch((e) => {
+    console.error('Seed error:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

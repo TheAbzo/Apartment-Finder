@@ -20,8 +20,6 @@ export const listHandler = async (req: Request, res: Response) => {
   }
 };
 
-
-
 export const getHandler = async (req: Request, res: Response) => {
   const { id } = req.params;
 

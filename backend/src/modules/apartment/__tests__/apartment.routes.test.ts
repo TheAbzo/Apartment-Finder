@@ -11,17 +11,15 @@ describe('Apartment Routes', () => {
   let createdApartmentId: string;
 
   it('POST /api/apartments - should create an apartment', async () => {
-    const response = await request(app)
-      .post('/api/apartments')
-      .send({
-        unitName: 'Route Test Unit',
-        unitNumber: '202',
-        projectName: 'Route Test Project',
-        price: 1500,
-        bedrooms: 3,
-        bathrooms: 2,
-        area: 90,
-      });
+    const response = await request(app).post('/api/apartments').send({
+      unitName: 'Route Test Unit',
+      unitNumber: '202',
+      projectName: 'Route Test Project',
+      price: 1500,
+      bedrooms: 3,
+      bathrooms: 2,
+      area: 90,
+    });
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('id');
