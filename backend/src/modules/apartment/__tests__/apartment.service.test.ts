@@ -1,5 +1,5 @@
 import { createApartmentService, listApartmentsService, getApartmentService } from '../apartment.service';
-import prisma from '../../../prismaClient';
+import _prisma from '../../../prismaCLient';
 
 describe('Apartment Service', () => {
   let createdApartmentId: string;

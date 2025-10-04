@@ -15,7 +15,7 @@ async function main() {
   ];
 
   console.log('Creating projects...');
-  const projects = [];
+  const projects: Array<Awaited<ReturnType<typeof prisma.project.create>>> = [];
   for (const name of projectNames) {
     const p = await prisma.project.create({
       data: {
@@ -32,7 +32,7 @@ async function main() {
   const BATCH = 50;
 
   for (let i = 0; i < TOTAL; i += BATCH) {
-    const batchPromises = [];
+    const batchPromises: Array<ReturnType<typeof prisma.apartment.create>> = [];
     const chunkSize = Math.min(BATCH, TOTAL - i);
 
     for (let j = 0; j < chunkSize; j++) {
