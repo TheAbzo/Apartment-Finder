@@ -1,5 +1,5 @@
-import prisma from '../../prismaClient';
 import { Prisma } from '@prisma/client';
+import prisma from '../../prismaCLient';
 
 export const createProjectIfNotExists = async (name: string) => {
   const existing = await prisma.project.findUnique({ where: { name } });

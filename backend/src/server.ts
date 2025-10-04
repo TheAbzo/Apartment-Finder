@@ -1,4 +1,4 @@
-import app from './app';
+import app from './App';
 import { PORT } from './config';
 
 app.listen(PORT, () => {
