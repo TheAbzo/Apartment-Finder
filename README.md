@@ -39,7 +39,7 @@ PORT=4000
 
 5. Run the application with Docker Compose:
 ```
-docker compose up -d --build
+docker compose up --build
 ```
 
 This will:
