@@ -1,34 +1,27 @@
 import prisma from '../src/prismaClient';
+import fs from 'fs';
+import path from 'path';
 import { faker } from '@faker-js/faker';
 
+const IMAGES_FOLDER = path.join(__dirname, 'seed-images');
+
+const imageFiles = fs.readdirSync(IMAGES_FOLDER).filter(f =>
+  /\.(jpe?g|png|gif|webp)$/i.test(f)
+);
 async function main() {
   console.log('Cleaning tables...');
   await prisma.apartment.deleteMany();
   await prisma.project.deleteMany();
 
-  const projectNames = [
-    'SeaView Towers',
-    'City Center Residences',
-    'Green Heights',
-    'River Side Complex',
-    'Sunset Villas',
-  ];
-
-  console.log('Creating projects...');
+  const projectNames = ['SeaView Towers','City Center Residences','Green Heights','River Side Complex','Sunset Villas'];
   const projects: Array<Awaited<ReturnType<typeof prisma.project.create>>> = [];
+
   for (const name of projectNames) {
-    const p = await prisma.project.create({
-      data: {
-        name,
-        location: faker.location.city(),
-      },
-    });
+    const p = await prisma.project.create({ data: { name, location: faker.location.city() } });
     projects.push(p);
   }
 
   const TOTAL = 300;
-
-  console.log(`Creating ${TOTAL} apartments in batches...`);
   const BATCH = 50;
 
   for (let i = 0; i < TOTAL; i += BATCH) {
@@ -37,6 +30,8 @@ async function main() {
 
     for (let j = 0; j < chunkSize; j++) {
       const proj = projects[Math.floor(Math.random() * projects.length)];
+
+      const images = [faker.helpers.arrayElement(imageFiles)];
 
       const aptData = {
         unitName: faker.word.words({ count: 2 }),
@@ -47,7 +42,7 @@ async function main() {
         bathrooms: faker.number.int({ min: 1, max: 3 }),
         area: faker.number.int({ min: 40, max: 300 }),
         description: faker.lorem.paragraph(),
-        images: [faker.image.url(), faker.image.url()],
+        images,
       };
 
       batchPromises.push(prisma.apartment.create({ data: aptData }));
@@ -61,10 +56,5 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error('Seed error:', e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch(e => { console.error('Seed error:', e); process.exit(1); })
+  .finally(async () => { await prisma.$disconnect(); });

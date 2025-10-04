@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { Apartment, PaginatedApartments } from '../types/apartment';
 
-const API_URL =
-  typeof window === 'undefined'
-    ? process.env.API_URL           // SSR / server-side inside Docker
-    : process.env.NEXT_PUBLIC_API_URL; // client-side in browser
+// const API_URL =
+//   typeof window === 'undefined'
+//     ? process.env.API_URL           // SSR / server-side inside Docker
+//     : process.env.NEXT_PUBLIC_API_URL; // client-side in browser
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+
 
 export type CreateApartmentInput = Omit<Apartment, 'id' | 'createdAt' | 'updatedAt'>;
 

@@ -15,11 +15,13 @@ export default async function ApartmentDetails({ params }: ApartmentPageProps) {
   const plural = (count: number, singular: string, plural?: string) =>
     count === 1 ? singular : plural || singular + 's';
 
+  console.log(apartment.images);
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
         <Image
-          src={'/images/apartment.jpg'}
+          src={apartment.images && apartment.images.length > 0 ? apartment.images[0] : '/images/apartment.jpg'}
           alt={apartment.unitName}
           width={320}
           height={320}

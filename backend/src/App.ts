@@ -2,10 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import apartmentRouter from './modules/apartment/apartment.routes';
 import { errorHandler } from './middlewares/errorHandler';
+import path from 'path';
+
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
+
+app.use('/images', express.static(path.resolve(__dirname, '../prisma/seed-images')));
 
 app.use('/api/apartments', apartmentRouter);
 

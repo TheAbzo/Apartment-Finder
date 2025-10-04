@@ -1,4 +1,16 @@
 import * as repo from './apartment.repository';
+import fs from 'fs';
+import path from 'path';
+
+const IMAGE_BASE_URL = '/images';
+const BACKEND_URL = 'http://localhost:4000'; 
+
+const SEED_IMAGES_FOLDER = path.resolve('prisma/seed-images');
+const seedImages = fs.existsSync(SEED_IMAGES_FOLDER)
+  ? fs.readdirSync(SEED_IMAGES_FOLDER).filter(f => /\.(jpe?g|png|gif|webp)$/i.test(f))
+  : [];
+
+console.log('Found seed images:', seedImages);
 
 export const createApartmentService = async (input: {
   unitName: string;
@@ -12,6 +24,10 @@ export const createApartmentService = async (input: {
   images?: string[];
 }) => {
   const project = await repo.createProjectIfNotExists(input.projectName);
+
+  const imagesToSave = [seedImages[Math.floor(Math.random() * seedImages.length)]];
+  
+
   const created = await repo.createApartment({
     unitName: input.unitName,
     unitNumber: input.unitNumber,
@@ -21,15 +37,41 @@ export const createApartmentService = async (input: {
     bathrooms: input.bathrooms,
     area: input.area,
     description: input.description,
-    images: input.images,
+    images: imagesToSave,
   });
-  return created;
+ const processed = {
+    ...created,
+    images: Array.isArray(created.images)
+      ? created.images.map(f => `${BACKEND_URL}${IMAGE_BASE_URL}/${f}`)
+      : [],
+  };
+
+  return processed;
 };
 
 export const listApartmentsService = async (params: repo.ListParams) => {
-  return repo.listApartments(params);
+  const result = await repo.listApartments(params);
+
+  return {
+    ...result,
+    data: result.data.map(a => ({
+      ...a,
+      images: Array.isArray(a.images)
+        ? (a.images.filter(f => typeof f === 'string') as string[]).map(
+            f => `${BACKEND_URL}${IMAGE_BASE_URL}/${f}`
+          )
+        : [],
+    })),
+  };
 };
 
 export const getApartmentService = async (id: string) => {
-  return repo.findApartmentById(id);
+  const apt = await repo.findApartmentById(id);
+  if (!apt) return null;
+
+  apt.images = Array.isArray(apt.images)
+    ? (apt.images.filter(f => typeof f === 'string') as string[]).map( f => `${BACKEND_URL}${IMAGE_BASE_URL}/${f}`)
+    : [];
+
+  return apt;
 };
