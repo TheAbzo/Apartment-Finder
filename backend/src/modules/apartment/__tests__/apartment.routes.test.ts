@@ -1,7 +1,7 @@
 import request from 'supertest';
 import express from 'express';
 import apartmentRouter from '../apartment.routes';
-import _prisma from '../../../prismaCLient';
+import _prisma from '../../../prismaClient';
 
 const app = express();
 app.use(express.json());

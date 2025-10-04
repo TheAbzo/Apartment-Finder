@@ -18,8 +18,16 @@ export default function ApartmentCard({ apartment }: Props) {
   };
   return (
     <div className={styles.card} onClick={handleClick}>
-      <Image   src={apartment.images && apartment.images.length > 0 ? apartment.images[0] : '/images/apartment.jpg'}
-                alt={apartment.unitName} width={400} height={180} />
+      <Image
+        src={
+          apartment.images && apartment.images.length > 0
+            ? apartment.images[0]
+            : '/images/apartment.jpg'
+        }
+        alt={apartment.unitName}
+        width={400}
+        height={180}
+      />
       <div className={styles['card-content']}>
         <h2>{apartment.unitName}</h2>
         <p>{apartment.project?.name}</p>

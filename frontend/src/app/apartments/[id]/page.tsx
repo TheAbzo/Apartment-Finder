@@ -21,7 +21,11 @@ export default async function ApartmentDetails({ params }: ApartmentPageProps) {
     <div className={styles.container}>
       <div className={styles.left}>
         <Image
-          src={apartment.images && apartment.images.length > 0 ? apartment.images[0] : '/images/apartment.jpg'}
+          src={
+            apartment.images && apartment.images.length > 0
+              ? apartment.images[0]
+              : '/images/apartment.jpg'
+          }
           alt={apartment.unitName}
           width={320}
           height={320}

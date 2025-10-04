@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 import path from 'path';
 import { faker } from '@faker-js/faker';
+import prisma from '../src/prismaClient';
 
-const prisma = new PrismaClient();
+
 
 const IMAGES_FOLDER = path.join(__dirname, 'seed-images');
 

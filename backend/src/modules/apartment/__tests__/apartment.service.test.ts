@@ -3,7 +3,7 @@ import {
   listApartmentsService,
   getApartmentService,
 } from '../apartment.service';
-import _prisma from '../../../prismaCLient';
+import _prisma from '../../../prismaClient';
 
 describe('Apartment Service', () => {
   let createdApartmentId: string;
